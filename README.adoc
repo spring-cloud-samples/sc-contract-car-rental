@@ -1,0 +1,98 @@
+= Spring Cloud Contract Car Rental
+
+== car-rental (consumer)
+
+Sends an HTTP request to fraud detection from a test
+Gets a Stream message from fraud detection
+
+== fraud-detection (producer)
+
+Producer of the HTTP api and messages
+
+== Presentation steps
+
+=== Before
+
+Start Rabbit & Eureka
+
+[souce,bash]
+----
+$ docker-compose up -d
+$ spring cloud eureka
+----
+
+=== Start.spring.io
+
+=== car-rental
+
+web, stubrunner, stream rabbit, wiremock
+
+and `stream-test-support` for Contract & Stream
+
+```xml
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-test-support</artifactId>
+			<scope>test</scope>
+		</dependency>
+```
+
+=== fraud-detection
+
+web, stream rabbit, verifier
+
+and `stream-test-support` for Contract & Stream
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-stream-test-support</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+and `plugin` - REMEMBER ABOUT `EXTENSIONS`
+
+```xml
+<!-- ADD A PLUGIN -->
+<plugin>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+    <version>${spring-cloud-contract.version}</version>
+    <!-- REMEMBER ABOUT THIS LINE -->
+    <extensions>true</extensions>
+    <configuration>
+        <baseClassForTests>com.example.frauddetection.BaseClass</baseClassForTests>
+    </configuration>
+</plugin>
+```
+
+
+=== Code
+
+==== HTTP
+
+*CONSUMER*
+- Generate consumer from start.spring.io
+- Add the missing dependencies
+- Start with a test on the consumer side
+- Write a not passing test to reach the `/fraud` endpoint of the producer
+- Add the WireMock stub to make the test pass (port `6543`)
+
+*PRODUCER*
+- Generate producer from start.spring.io
+- Add the missing dependencies
+- Write a contract for the `/frauds` endpoint (the typo is deliberate)
+- Configure the plugin with `baseClassForTests`
+- Run `./mvnw clean install` - show breaking tests
+- Write the controller
+- Write missing base class setup
+- Rerun the `./mvnw clean install` - things pass
+- Run the app at port `6544`
+
+*CONSUMER*
+- Write a new test that will reach the producer application directly (port `6544`)
+- The previous test with a stub passes, the new one fails (oops)
+- Write a new test with `StubRunnerRule` `com.example:fraud-detection` at (port `6545`)
+- The test fails cause first we'll shoot at `/fraud`
+- The test passes once we shoot at `/frauds`
