@@ -9,8 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.StubTrigger;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarRentalApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -48,4 +53,15 @@ public class FraudTests {
 		BDDAssertions.then(this.goodFraudListener.name).isEqualTo("Long");
 	}
 
+	@Autowired RestTemplate restTemplate;
+
+	// (4) - stub runner for discovery client
+	@Test
+	public void should_retrieve_list_of_frauds_from_stub_via_discovery() {
+		ResponseEntity<String> entity = this.restTemplate.exchange(RequestEntity
+				.get(URI.create("http://fraud-detection/frauds")).build(), String.class);
+
+		BDDAssertions.then(entity.getStatusCode().value()).isEqualTo(201);
+		BDDAssertions.then(entity.getBody()).isEqualTo("[\"marcin\",\"josh\"]");
+	}
 }

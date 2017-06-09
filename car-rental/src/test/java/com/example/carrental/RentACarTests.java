@@ -81,4 +81,5 @@ public class RentACarTests {
 
 		BDDAssertions.then(entity.getStatusCode().value()).isEqualTo(200);
 	}
+
 }

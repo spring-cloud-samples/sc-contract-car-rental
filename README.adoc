@@ -25,7 +25,7 @@ $ spring cloud eureka
 
 === car-rental
 
-web, stubrunner, stream rabbit, wiremock
+web, stubrunner, stream rabbit, wiremock, Eureka Discovery
 
 and `stream-test-support` for Contract & Stream
 
@@ -39,7 +39,7 @@ and `stream-test-support` for Contract & Stream
 
 === fraud-detection
 
-web, stream rabbit, verifier, REST Docs, wiremock
+web, stream rabbit, verifier, REST Docs, wiremock, Eureka Discovery
 
 and `stream-test-support` for Contract & Stream
 
@@ -281,3 +281,31 @@ approach
 
 - Reuse the previously created setup and just send a `post`
  method to `/messages`. Expect status `200`
+
+==== Discovery
+
+*CONSUMER*
+
+- Add `@EnableDiscoveryClient`
+- Add `@Bean @LoadBalanced` for `RestTemplate`
+- Add `spring.application.name=car-rental`
+- In `FraudTests` we'll add another test (we need `@AutoConfigureStubRunner`)
+    * `@Autowired RestTemplate`
+    * Use the `RestTemplate` to call `"http://fraud-detection/frauds"`
+    * The test passes cause SC-Contract redirects the calls via artifact id
+
+==== Stub Runner Boot
+
+- Clone Stub Runner for Eureka & Rabbit from https://github.com/spring-cloud-samples/github-analytics-stub-runner-boot
+- Build it locally
+- `java -jar target/github-analytics-stub-runner-boot-0.0.1.M1.jar --stubrunner.workoffline=true --stubrunner.ids=com.example:fraud-detection`
+- Show http://localhost:8083/stubs
+- Show http://localhost:8083/triggers
+- Show http://localhost:8761 with registered apps
+- Run `car-rental`
+- `curl -X POST http://localhost:8083/triggers/trigger_a_fraud`
+- Check that in the logs we see that a message was received
+- Write a test that isn't annotated with `@AutoConfigureStubRunner`
+and inject `RestTemplate` - you can shoot a request to
+`fraud-detection` and a stub will respond
+
