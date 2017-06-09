@@ -71,4 +71,14 @@ public class RentACarTests {
 		BDDAssertions.then(entity.getStatusCode().value()).isEqualTo(201);
 		BDDAssertions.then(entity.getBody()).isEqualTo("[\"marcin\",\"josh\"]");
 	}
+
+	// (3) - REST DOCS
+	@Test
+	public void should_trigger_a_message() {
+		// 4 - passing test
+		ResponseEntity<String> entity = new RestTemplate().exchange(RequestEntity
+		.post(URI.create("http://localhost:6545/message")).build(), String.class);
+
+		BDDAssertions.then(entity.getStatusCode().value()).isEqualTo(200);
+	}
 }

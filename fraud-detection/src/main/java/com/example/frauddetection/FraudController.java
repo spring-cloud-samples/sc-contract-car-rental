@@ -1,6 +1,5 @@
 package com.example.frauddetection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.support.MessageBuilder;
@@ -19,15 +18,21 @@ import java.util.List;
 public class FraudController {
 
 	// (1) - Make a typo (on the consumer side it will be `/fraud`
-	@GetMapping("/frauds") ResponseEntity<List<String>> frauds() {
+	@GetMapping("/frauds")
+	ResponseEntity<List<String>> frauds() {
 		return ResponseEntity.status(201).body(Arrays.asList("marcin", "josh"));
 	}
 
 	// (2) - messaging
-	@Autowired Source source;
+	private final Source source;
+
+	public FraudController(Source source) {
+		this.source = source;
+	}
 
 	// (2) - we're sending a message to a destination `frauds` - consumer expects `fraud`
-	@PostMapping("/message") void message() {
+	@PostMapping("/message")
+	void message() {
 		source.output().send(MessageBuilder.withPayload(new Fraud("Long")).build());
 	}
 }

@@ -24,6 +24,8 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Dalston.SR1</spring-cloud.version>
 		<spring-cloud-contract.version>1.1.1.RELEASE</spring-cloud-contract.version>
+		<!-- we don't want to install stubs twice -->
+		<spring.cloud.contract.verifier.jar.skip>true</spring.cloud.contract.verifier.jar.skip>
 	</properties>
 
 	<dependencies>
@@ -50,6 +52,16 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-contract-wiremock</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -81,6 +93,25 @@
 				<configuration>
 					<baseClassForTests>com.example.frauddetection.BaseClass</baseClassForTests>
 				</configuration>
+			</plugin>
+			<!-- REST DOCS -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>stub</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<attach>true</attach>
+							<descriptor>${basedir}/src/assembly/stub.xml</descriptor>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

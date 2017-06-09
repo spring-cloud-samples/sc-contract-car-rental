@@ -23,7 +23,7 @@ public class BaseClass {
 
 	@Before
 	public void setup() {
-		RestAssuredMockMvc.standaloneSetup(new FraudController());
+		RestAssuredMockMvc.standaloneSetup(this.controller);
 	}
 
 	public void triggerMethod() {
