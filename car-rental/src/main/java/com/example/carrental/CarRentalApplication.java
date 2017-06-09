@@ -5,20 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.messaging.SubscribableChannel;
 import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
 
 @SpringBootApplication
-@EnableBinding(Sink.class)
+@EnableBinding({Sink.class, GoodSink.class})
 public class CarRentalApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CarRentalApplication.class, args);
 	}
 }
+
+// FOR MANUAL TESTS
 
 @Component
 class FraudListener {
@@ -35,6 +39,36 @@ class FraudListener {
 }
 
 
+// FOR STUB RUNNER
+
+@Component
+class GoodFraudListener {
+
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	String name;
+
+	@StreamListener(GoodSink.INPUT)
+	public void fraud(GoodFraud fraud) {
+		log.info("Got the message [{}]", fraud);
+		name = fraud.surname;
+	}
+}
+
+/**
+ * We separate the inputs from stub runner and manual one
+ */
+interface GoodSink {
+
+	String INPUT = "good_input";
+
+	@Input(GoodSink.INPUT) SubscribableChannel input();
+
+}
+
+/**
+ * Fraud that will fail in reality cause name should be surname
+ */
 class Fraud {
 	public String name;
 
@@ -45,11 +79,41 @@ class Fraud {
 	public Fraud() {
 	}
 
+	@Override public String toString() {
+		return "Fraud{" + "name='" + name + '\'' + '}';
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+}
+
+/**
+ * Fraud that will pass in reality cause it contains a surname
+ */
+class GoodFraud {
+	public String surname;
+
+	public GoodFraud(String surname) {
+		this.surname = surname;
+	}
+
+	public GoodFraud() {
+	}
+
+	@Override public String toString() {
+		return "GoodFraud{" + "surname='" + surname + '\'' + '}';
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 }

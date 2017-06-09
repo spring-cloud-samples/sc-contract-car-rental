@@ -73,6 +73,7 @@ and `plugin` - REMEMBER ABOUT `EXTENSIONS`
 ==== HTTP
 
 *CONSUMER*
+
 - Generate consumer from start.spring.io
 - Add the missing dependencies
 - Start with a test on the consumer side
@@ -80,6 +81,7 @@ and `plugin` - REMEMBER ABOUT `EXTENSIONS`
 - Add the WireMock stub to make the test pass (port `6543`)
 
 *PRODUCER*
+
 - Generate producer from start.spring.io
 - Add the missing dependencies
 - Write a contract for the `/frauds` endpoint (the typo is deliberate)
@@ -91,8 +93,88 @@ and `plugin` - REMEMBER ABOUT `EXTENSIONS`
 - Run the app at port `6544`
 
 *CONSUMER*
+
 - Write a new test that will reach the producer application directly (port `6544`)
 - The previous test with a stub passes, the new one fails (oops)
 - Write a new test with `StubRunnerRule` `com.example:fraud-detection` at (port `6545`)
 - The test fails cause first we'll shoot at `/fraud`
 - The test passes once we shoot at `/frauds`
+
+==== Messaging
+
+*CONSUMER*
+
+- Enable binding for Sink
+- In `application.properties`
+    * set the port to `9876`
+    * `spring.cloud.stream.bindings.input.destination=fraud`
+    * on the producer side it will be `frauds`
+- Add a `Fraud` pojo with a `name`
+- Add a `FraudListener` `@Component`
+    * with a method `fraud` that has `@StreamListener(Sink.class)`
+    * let it print a message out
+    * and store the name
+- Let's write a `FraudTests` class
+    * we want to see if our listener will work fine if we send it our
+    POJO
+    * let's write a test `should_store_info_about_fraud`
+    * make it a SpringBoot test
+    * `@Autowired FraudListener`
+    * `@Autowired Sink`
+    * given: a `new Fraud("marcin")`
+    * when: `sink.input().send(MessageBuilder.withPayload(fraud).build());`
+    * then: `fraudListener.name == "marcin"`
+- The test passes - let's go to the producer
+
+*PRODUCER*
+
+- `EnableBinding(Source.class)`
+- Set properties
+    * `spring.cloud.stream.bindings.output.destination=frauds`
+    * Yup, that's a typo over there ^^
+    * `spring.cloud.stream.bindings.output.contentType=application/json`
+    * `server.port=6544`
+- Let's write a contract for messaging
+    * label `trigger_a_fraud`
+    * input method `triggerMethod()`
+    * output to destination `frauds`
+    * body `surname: "Long"`
+- Create a `Fraud` pojo in the `FraudController`
+- `FraudController` will need a `@PostMapping("/message")` method called `message` that will use `Source`
+to send a message with `new Fraud("Long")`
+- Let's run `./mvnw clean install` and generate tests
+    * they will fail cause we have a missing `triggerMethod()`
+- Let's create the `triggerMethod()` in the `BaseClass`
+    * Also we need to add the Spring context with `@AutoConfigureMessageVerifier`
+    * `@Autowired FraudController`
+    * call in the `triggerMethod()` the `fraudController.message()`
+
+Let's try to make both apps work! Let's run them together
+
+[source,bash]
+----
+curl -X POST http://localhost:6544/message
+----
+
+Nothing happens... Even though the tests passed. That's for 2 reasons
+
+- the destination is wrong. One is sending to `frauds` the other
+listening to `fraud`
+- the POJO is wrong. Once expects `name` the other `surname`
+
+Time to fix the consumer
+
+*CONSUMER*
+
+- Let's use Stub Runner
+- `@AutoConfigureStubRunner(workOffline = true, ids = "com.example:fraud-detection")`
+- `@Autowired StubTrigger`
+- `stubTrigger.trigger("trigger_a_fraud");`
+    * the test won't pass - let's update the destination
+- `spring.cloud.stream.bindings.input.destination=frauds`
+    * let's run again the tests - still they don't pass cause
+    the name is wrong
+- let's change `Fraud` to use `surname`
+    * now if we rerun the tests they pass
+
+Let's run both apps again, send the CURL - now they should work
