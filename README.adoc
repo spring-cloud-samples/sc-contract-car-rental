@@ -308,4 +308,9 @@ approach
 - Write a test that isn't annotated with `@AutoConfigureStubRunner`
 and inject `RestTemplate` - you can shoot a request to
 `fraud-detection` and a stub will respond
+    * or write a POST endpoint to `/rent` that will receive a
+    `{"name":"marcin"}` and then it will call `fraud-detection/frauds`
+    to retrieve a list of frauds. If that string contains the `name`
+    then set status code `406` and text `NO`. Otherwise `200` and `yes`
+    and run a curl `curl -X POST -d '{"name":"marcin"}' http://localhost:8765`
 
