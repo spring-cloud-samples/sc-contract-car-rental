@@ -5,6 +5,7 @@ source common.sh || source scripts/common.sh || echo "No common.sh script found.
 PROFILE="${PROFILE:-edgware}"
 BOM_VERSION="${BOM_VERSION:-Edgware.BUILD-SNAPSHOT}"
 ADDITIONAL_MAVEN_OPTS="${ADDITIONAL_MAVEN_OPTS:--Dspring-cloud.version=$BOM_VERSION}"
+ROOT_FOLDER=${ROOT_FOLDER:-`pwd`}
 
 set -e
 
