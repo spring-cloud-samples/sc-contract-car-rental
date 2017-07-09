@@ -314,3 +314,32 @@ and inject `RestTemplate` - you can shoot a request to
     then set status code `406` and text `NO`. Otherwise `200` and `yes`
     and run a curl `curl -X POST -d '{"name":"marcin"}' http://localhost:8765`
 
+
+==== Stub Runner Boot with a NodeJs app
+
+- Install `npm`
+- Install the `request` module `npm install request`
+- Ensure that Stub Runner Boot is not running
+- Go to `nodejs` folder and execute
++
+```
+$ node app.js
+```
+- You will get sth like this
++
+```
+ERROR - status [404]
+```
+- Next run stub runner boot and show how easy it is to start a stub (this assumes that `fraud-detection` stubs were installed locally)
++
+```
+$ git clone https://github.com/spring-cloud-samples/stub-runner-boot
+$ cd stub-runner-boot
+$ ./mvnw clean install -DskipTests
+$ java -jar target/stub-runner-boot-1.1.0.RELEASE.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
+```
+- You will get sth like this
++
+```javascript
+["marcin","josh"]
+```

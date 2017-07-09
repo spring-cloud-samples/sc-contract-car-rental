@@ -1,0 +1,43 @@
+= NodeJS app
+
+This terribly simple NodeJS App sends a request to `http://localhost:9876/frauds` and prints in
+on the response.
+
+== Required modules
+
+```
+npm install request
+```
+
+== How to run it
+
+=== Failing scenario
+
+Run it without running stub runner boot and show that it will fail.
+
+```
+$ node app.js
+```
+
+you will get sth like this
+
+```
+ERROR - status [404]
+```
+
+=== Passing scenario
+
+Next run stub runner boot and show how easy it is to start a stub (this assumes that `fraud-detection` stubs were installed locally)
+
+```
+$ git clone https://github.com/spring-cloud-samples/stub-runner-boot
+$ cd stub-runner-boot
+$ ./mvnw clean install -DskipTests
+$ java -jar target/stub-runner-boot-1.1.0.RELEASE.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
+```
+
+you will get sth like this
+
+```javascript
+["marcin","josh"]
+```
