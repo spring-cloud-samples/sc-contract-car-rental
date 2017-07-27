@@ -36,7 +36,13 @@ $ ./mvnw clean install -DskipTests
 $ java -jar target/stub-runner-boot-1.1.0.RELEASE.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
 ```
 
-you will get sth like this
+and run the node application again
+
+```
+$ node app.js
+```
+
+this time you will get sth like this
 
 ```javascript
 ["marcin","josh"]
