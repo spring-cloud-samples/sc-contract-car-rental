@@ -6,7 +6,8 @@ request.get(
         if (!error && response.statusCode >= 200 && response.statusCode < 400) {
             console.log(body)
         } else {
-            console.log("ERROR - status [" + response.statusCode + "]")
+            console.log("ERROR - status [" + (response === undefined
+                ? "undefined" : response.statusCode) + "]")
         }
     }
 );
