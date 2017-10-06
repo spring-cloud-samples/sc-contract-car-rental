@@ -1,0 +1,4 @@
+stubrunner:
+  workOffline: true
+  ids:
+    - com.example:fraud-detection:+:9876
