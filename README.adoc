@@ -338,6 +338,13 @@ $ cd stub-runner-boot
 $ ./mvnw clean install -DskipTests
 $ java -jar target/stub-runner-boot-1.1.0.RELEASE.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
 ```
+
+or use Spring Cloud CLI
+
+```
+$ spring cloud stubrunner
+```
+
 - You will get sth like this
 +
 ```javascript
