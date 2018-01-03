@@ -294,7 +294,7 @@ approach
     * Use the `RestTemplate` to call `"http://fraud-detection/frauds"`
     * The test passes cause SC-Contract redirects the calls via artifact id
 
-==== Stub Runner Boot
+==== Stub Runner Boot with Eureka and Rabbit (optional)
 
 - Clone Stub Runner for Eureka & Rabbit from https://github.com/spring-cloud-samples/github-analytics-stub-runner-boot
 - Build it locally
