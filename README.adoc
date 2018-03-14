@@ -333,10 +333,23 @@ ERROR - status [404]
 - Next run stub runner boot and show how easy it is to start a stub (this assumes that `fraud-detection` stubs were installed locally)
 +
 ```
-$ git clone https://github.com/spring-cloud-samples/stub-runner-boot
-$ cd stub-runner-boot
-$ ./mvnw clean install -DskipTests
-$ java -jar target/stub-runner-boot-1.1.0.RELEASE.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
+$ mkdir -p target
+$ wget -O target/stub-runner.jar 'https://search.maven.org/remote_content?g=org.springframework.cloud&a=spring-cloud-contract-stub-runner-boot&v=1.2.3.RELEASE'
+$ java -jar target/stub-runner.jar --stubrunner.workOffline=true --stubrunner.ids="com.example:fraud-detection:+:9876"
+```
+
+or use docker (we're mounting your local `.m2` to the docker's `.m2`)
+
+```bash
+#!/bin/bash
+# Provide the Spring Cloud Contract Docker version
+SC_CONTRACT_DOCKER_VERSION="1.2.4.BUILD-SNAPSHOT"
+# Spring Cloud Contract Stub Runner properties
+STUBRUNNER_PORT="8083"
+# Stub coordinates 'groupId:artifactId:version:classifier:port'
+STUBRUNNER_IDS="com.example:fraud-detection:0.0.1-SNAPSHOT:stubs:9876"
+# Run the docker with Stub Runner Boot
+docker run  --rm -e "STUBRUNNER_IDS=${STUBRUNNER_IDS}" -e "STUBRUNNER_WORK_OFFLINE=true" -p "${STUBRUNNER_PORT}:${STUBRUNNER_PORT}" -p "9876:9876"  -v "${HOME}/.m2/:/root/.m2:ro" springcloud/spring-cloud-contract-stub-runner:"${SC_CONTRACT_DOCKER_VERSION}"
 ```
 
 or use Spring Cloud CLI
