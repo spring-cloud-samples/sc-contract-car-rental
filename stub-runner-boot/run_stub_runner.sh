@@ -1,10 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+set -o errexit
 
 mkdir -p target
-cd target
-git clone https://github.com/spring-cloud-samples/stub-runner-boot || REPO_CLONED="true"
-cd stub-runner-boot
-if [[ "${REPO_CLONED}" != "true" ]]; then
-	./mvnw clean install
+STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-1.2.3.RELEASE}"
+if [ ! -f "target/stub-runner.jar" ]; then
+    wget -O target/stub-runner.jar "https://search.maven.org/remote_content?g=org.springframework.cloud&a=spring-cloud-contract-stub-runner-boot&v=${STUBRUNNER_VERSION}"
+else
+    echo "Stub Runner already downloaded"
 fi
-java -jar target/stub-runner-boot-*.jar --stubrunner.workOffline="true" --stubrunner.ids="com.example:fraud-detection:+:9876"
+java -jar target/stub-runner.jar --stubrunner.workOffline="true" --stubrunner.ids="com.example:fraud-detection:+:9876"
