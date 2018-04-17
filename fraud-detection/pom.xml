@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.10.RELEASE</version>
+		<version>1.5.12.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Edgware.SR2</spring-cloud.version>
+		<spring-cloud.version>Edgware.SR3</spring-cloud.version>
 		<spring-cloud-contract.version>1.2.3.RELEASE</spring-cloud-contract.version>
 		<!-- we don't want to install stubs twice -->
 		<spring.cloud.contract.verifier.jar.skip>true</spring.cloud.contract.verifier.jar.skip>
@@ -119,5 +119,74 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>spring</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>spring-snapshots</id>
+					<name>Spring Snapshots</name>
+					<url>http://repo.spring.io/libs-snapshot-local</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>spring-milestones</id>
+					<name>Spring Milestones</name>
+					<url>http://repo.spring.io/libs-milestone-local</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>spring-releases</id>
+					<name>Spring Releases</name>
+					<url>http://repo.spring.io/release</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>spring-snapshots</id>
+					<name>Spring Snapshots</name>
+					<url>http://repo.spring.io/libs-snapshot-local</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>spring-milestones</id>
+					<name>Spring Milestones</name>
+					<url>http://repo.spring.io/libs-milestone-local</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>spring-plugin-snapshots</id>
+					<name>Spring Snapshots</name>
+					<url>http://repo.spring.io/plugins-snapshot-local</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>spring-plugin-milestones</id>
+					<name>Spring Milestones</name>
+					<url>http://repo.spring.io/plugins-release-local</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
 
 </project>
