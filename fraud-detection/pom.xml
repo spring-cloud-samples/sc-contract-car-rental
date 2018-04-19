@@ -39,7 +39,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 		<dependency>
@@ -112,7 +112,9 @@
 						<inherited>false</inherited>
 						<configuration>
 							<attach>true</attach>
-							<descriptor>${basedir}/src/assembly/stub.xml</descriptor>
+							<descriptors>
+								<descriptor>${basedir}/src/assembly/stub.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>

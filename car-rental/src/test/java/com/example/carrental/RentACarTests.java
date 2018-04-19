@@ -1,6 +1,7 @@
 package com.example.carrental;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
+import java.net.URI;
+
 import org.assertj.core.api.BDDAssertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.contract.stubrunner.junit.StubRunnerRule;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
+import com.github.tomakehurst.wiremock.client.WireMock;
 
 
 @RunWith(SpringRunner.class)
@@ -58,7 +60,7 @@ public class RentACarTests {
 	@Rule public StubRunnerRule stubRunner = new StubRunnerRule()
 			.downloadStub("com.example", "fraud-detection")
 			.withPort(6545)
-			.workOffline(true);
+			.stubsMode(StubRunnerProperties.StubsMode.LOCAL);
 
 	// Show how stub runner works (port 6545)
 	// Test will fail due to typo for `/fraud` -> remember to call `/frauds`
