@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-source common.sh || source scripts/common.sh || echo "No common.sh script found..."
+# port is $1
+function kill_app_with_port() {
+    kill -9 $(lsof -t -i:$1) && echo "Killed an app running on port [$1]" || echo "No app running on port [$1]"
+}
+
+kill_app_with_port 6543 || echo "Failed to kill app at port 6543"
+kill_app_with_port 6544 || echo "Failed to kill app at port 6544"
 
 PROFILE="${PROFILE:-finchley}"
 BOM_VERSION="${BOM_VERSION:-Finchley.BUILD-SNAPSHOT}"
