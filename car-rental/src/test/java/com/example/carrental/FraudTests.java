@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.StubTrigger;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,8 @@ import java.net.URI;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarRentalApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 // 2 stub runner for messaging
-@AutoConfigureStubRunner(workOffline = true, ids = "com.example:fraud-detection")
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL,
+		ids = "com.example:fraud-detection")
 public class FraudTests {
 
 	@Autowired FraudListener fraudListener;
