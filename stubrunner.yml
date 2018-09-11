@@ -1,4 +1,4 @@
 stubrunner:
-  workOffline: true
+  stubs-mode: LOCAL
   ids:
     - com.example:fraud-detection:+:9876

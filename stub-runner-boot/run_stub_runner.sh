@@ -3,19 +3,22 @@
 set -o errexit
 
 mkdir -p target
-STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-2.0.2.BUILD-SNAPSHOT}"
+STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-2.1.0.BUILD-SNAPSHOT}"
+LOCATION=""
+case "${STUBRUNNER_VERSION}" in
+  *RELEASE*)
+    LOCATION="https://search.maven.org/remotecontent?filepath=org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
+    ;;
+  *SR*)
+    LOCATION="https://search.maven.org/remotecontent?filepath=org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
+    ;;
+  *)
+    LOCATION="https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
+    ;;
+esac
+echo "For version [${STUBRUNNER_VERSION}] Stub Runner JAR download location is [${LOCATION}]"
 if [ ! -f "target/stub-runner.jar" ]; then
-    case "${STUBRUNNER_VERSION}" in
-      *RELEASE*)
-        wget -O target/stub-runner.jar "https://search.maven.org/remotecontent?filepath=org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
-        ;;
-      *SR*)
-        wget -O target/stub-runner.jar "https://search.maven.org/remotecontent?filepath=org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
-        ;;
-      *)
-        wget -O target/stub-runner.jar "https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-contract-stub-runner-boot/${STUBRUNNER_VERSION}/spring-cloud-contract-stub-runner-boot-${STUBRUNNER_VERSION}.jar"
-        ;;
-    esac
+    wget -O target/stub-runner.jar "${LOCATION}"
 else
     echo "Stub Runner already downloaded"
 fi
