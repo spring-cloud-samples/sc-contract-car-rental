@@ -75,7 +75,7 @@ class GoodFraudListener {
  */
 interface GoodSink {
 
-	String INPUT = "good_input";
+	String INPUT = "goodInput";
 
 	@Input(GoodSink.INPUT) SubscribableChannel input();
 
