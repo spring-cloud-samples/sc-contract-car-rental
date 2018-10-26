@@ -3,7 +3,7 @@
 set -o errexit
 
 mkdir -p target
-STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-2.0.0.M8}"
+STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-2.0.3.BUILD-SNAPSHOT}"
 if [ ! -f "target/stub-runner.jar" ]; then
     case "${STUBRUNNER_VERSION}" in
       *RELEASE*)
