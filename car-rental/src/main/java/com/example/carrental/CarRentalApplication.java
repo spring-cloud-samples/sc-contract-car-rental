@@ -144,7 +144,7 @@ class CarRentalController {
 	@PostMapping("/rent")
 	@SuppressWarnings("unchecked")
 	ResponseEntity<String> rent(@RequestBody ClientRequest request) {
-		String frauds = restTemplate.getForObject("http://fraud-detection/frauds", String.class);
+		String frauds = restTemplate.getForObject("https://fraud-detection/frauds", String.class);
 		if (frauds.contains(request.getName())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NO");
 		}
