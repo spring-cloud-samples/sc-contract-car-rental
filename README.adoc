@@ -291,7 +291,7 @@ approach
 - Add `spring.application.name=car-rental`
 - In `FraudTests` we'll add another test (we need `@AutoConfigureStubRunner`)
     * `@Autowired RestTemplate`
-    * Use the `RestTemplate` to call `"https://fraud-detection/frauds"`
+    * Use the `RestTemplate` to call `"http://fraud-detection/frauds"`
     * The test passes cause SC-Contract redirects the calls via artifact id
 
 ==== Stub Runner Boot with Eureka and Rabbit (optional)

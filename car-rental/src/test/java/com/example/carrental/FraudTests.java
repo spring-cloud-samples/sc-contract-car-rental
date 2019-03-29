@@ -61,7 +61,7 @@ public class FraudTests {
 	@Test
 	public void should_retrieve_list_of_frauds_from_stub_via_discovery() {
 		ResponseEntity<String> entity = this.restTemplate.exchange(RequestEntity
-				.get(URI.create("https://fraud-detection/frauds")).build(), String.class);
+				.get(URI.create("http://fraud-detection/frauds")).build(), String.class);
 
 		BDDAssertions.then(entity.getStatusCode().value()).isEqualTo(201);
 		BDDAssertions.then(entity.getBody()).isEqualTo("[\"marcin\",\"josh\"]");
