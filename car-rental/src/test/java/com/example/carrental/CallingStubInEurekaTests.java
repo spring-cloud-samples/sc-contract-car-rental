@@ -1,14 +1,12 @@
 package com.example.carrental;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -16,8 +14,7 @@ import java.net.URI;
 /**
  * Created by mgrzejszczak.
  */
-@Ignore
-@RunWith(SpringRunner.class)
+@Disabled
 @SpringBootTest(classes = CarRentalApplication.class)
 public class CallingStubInEurekaTests {
 

@@ -1,15 +1,28 @@
 package com.example.frauddetection;
 
+import java.util.function.Supplier;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.context.annotation.Bean;
+
+import reactor.core.publisher.EmitterProcessor;
+import reactor.core.publisher.Flux;
 
 @SpringBootApplication
-@EnableBinding(Source.class)
 public class FraudDetectionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FraudDetectionApplication.class, args);
+	}
+
+	@Bean
+	EmitterProcessor<Fraud> emitterProcessor() {
+		return EmitterProcessor.create();
+	}
+
+	@Bean
+	Supplier<Flux<Fraud>> output(EmitterProcessor<Fraud> emitter) {
+		return () -> emitter;
 	}
 }

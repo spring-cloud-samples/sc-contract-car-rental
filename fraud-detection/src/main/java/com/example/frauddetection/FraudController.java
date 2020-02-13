@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import reactor.core.publisher.EmitterProcessor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,16 +26,16 @@ public class FraudController {
 	}
 
 	// (2) - messaging
-	private final Source source;
+	private final EmitterProcessor<Fraud> source;
 
-	public FraudController(Source source) {
+	public FraudController(EmitterProcessor<Fraud> source) {
 		this.source = source;
 	}
 
 	// (2) - we're sending a message to a destination `frauds` - consumer expects `fraud`
 	@PostMapping("/message")
 	void message() {
-		source.output().send(MessageBuilder.withPayload(new Fraud("Long")).build());
+		source.onNext(new Fraud("Long"));
 	}
 }
 

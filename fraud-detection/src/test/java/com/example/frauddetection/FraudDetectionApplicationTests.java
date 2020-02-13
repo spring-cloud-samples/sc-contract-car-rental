@@ -1,12 +1,12 @@
 package com.example.frauddetection;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ImportAutoConfiguration(TestChannelBinderConfiguration.class)
 public class FraudDetectionApplicationTests {
 
 	@Test

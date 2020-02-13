@@ -3,25 +3,21 @@ package com.example.carrental;
 import java.net.URI;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.cloud.contract.stubrunner.junit.StubRunnerRule;
+import org.springframework.cloud.contract.stubrunner.junit.StubRunnerExtension;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 
-
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 // 2 - added WireMock stub
 @AutoConfigureWireMock(port = 6543)
@@ -57,7 +53,7 @@ public class RentACarTests {
 		//BDDAssertions.then(entity.getBody()).isEqualTo("[\"marcin\",\"josh\"]");
 	}
 
-	@Rule public StubRunnerRule stubRunner = new StubRunnerRule()
+	@RegisterExtension public static StubRunnerExtension stubRunner = new StubRunnerExtension()
 			.downloadStub("com.example", "fraud-detection")
 			.withPort(6545)
 			.stubsMode(StubRunnerProperties.StubsMode.LOCAL);

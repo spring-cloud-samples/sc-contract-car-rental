@@ -6,14 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.SubscribableChannel;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
 
 @SpringBootApplication
-@EnableBinding({Sink.class, GoodSink.class})
 @EnableDiscoveryClient
 public class CarRentalApplication {
 
@@ -35,51 +30,29 @@ public class CarRentalApplication {
 	@LoadBalanced RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+	
 }
 
 // FOR MANUAL TESTS
 
-@Component
-class FraudListener {
+@Component("input")
+class FraudListener implements Consumer<Fraud> {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	String name;
 
-	@StreamListener(Sink.INPUT)
-	public void fraud(Fraud fraud) {
+	private void fraud(Fraud fraud) {
 		log.info("Got the message [{}]", fraud);
 		name = fraud.name;
 	}
-}
 
-
-// FOR STUB RUNNER
-
-@Component
-class GoodFraudListener {
-
-	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-	String name;
-
-	@StreamListener(GoodSink.INPUT)
-	public void fraud(GoodFraud fraud) {
-		log.info("Got the message [{}]", fraud);
-		name = fraud.surname;
+	@Override
+	public void accept(Fraud t) {
+		fraud(t);
 	}
 }
 
-/**
- * We separate the inputs from stub runner and manual one
- */
-interface GoodSink {
-
-	String INPUT = "goodinput";
-
-	@Input(GoodSink.INPUT) SubscribableChannel input();
-
-}
 
 /**
  * Fraud that will fail in reality cause name should be surname
@@ -107,31 +80,6 @@ class Fraud {
 	}
 }
 
-/**
- * Fraud that will pass in reality cause it contains a surname
- */
-class GoodFraud {
-	public String surname;
-
-	public GoodFraud(String surname) {
-		this.surname = surname;
-	}
-
-	public GoodFraud() {
-	}
-
-	@Override public String toString() {
-		return "GoodFraud{" + "surname='" + surname + '\'' + '}';
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-}
 
 @RestController
 class CarRentalController {
