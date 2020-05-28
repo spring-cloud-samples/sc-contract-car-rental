@@ -20,7 +20,7 @@ import java.util.List;
 public class FraudController {
 
 	// (1) - Make a typo (on the consumer side it will be `/fraud`
-	@GetMapping(value = "/frauds", produces = "application/json")
+	@GetMapping(value = "/frauds")
 	ResponseEntity<List<String>> frauds() {
 		return ResponseEntity.status(201).body(Arrays.asList("marcin", "josh"));
 	}
