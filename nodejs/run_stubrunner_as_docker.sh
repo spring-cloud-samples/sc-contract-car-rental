@@ -1,6 +1,6 @@
 #!/bin/bash
 # Provide the Spring Cloud Contract Docker version
-SC_CONTRACT_DOCKER_VERSION="2.2.0.BUILD-SNAPSHOT"
+SC_CONTRACT_DOCKER_VERSION="2.2.3.BUILD-SNAPSHOT"
 # Spring Cloud Contract Stub Runner properties
 STUBRUNNER_PORT="8750"
 # Stub coordinates 'groupId:artifactId:version:classifier:port'
