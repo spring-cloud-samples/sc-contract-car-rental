@@ -1,5 +1,6 @@
 package com.example.frauddetection;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @AutoConfigureMockMvc
 @ImportAutoConfiguration(TestChannelBinderConfiguration.class)
+@Disabled
 public class FraudControllerTests {
 
 	@Autowired private MockMvc mockMvc;
