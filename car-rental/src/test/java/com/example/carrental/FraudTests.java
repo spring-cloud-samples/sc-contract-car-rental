@@ -2,6 +2,7 @@ package com.example.carrental;
 
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,6 +50,7 @@ public class FraudTests {
 
 	// (4) - stub runner for discovery client
 	@Test
+	@Disabled
 	public void should_retrieve_list_of_frauds_from_stub_via_discovery() {
 		ResponseEntity<String> entity = this.restTemplate.exchange(RequestEntity
 				.get(URI.create("http://fraud-detection/frauds")).build(), String.class);
