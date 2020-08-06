@@ -2,8 +2,15 @@
 
 set -o errexit
 
+function contractVersion() {
+    local minor="${1}"
+    # curl https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/spring-cloud-starter-contract-verifier/maven-metadata.xml | sed -ne '/<latest>/s#\s*<[^>]*>\s*##gp') | xargs
+    curl --silent https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/spring-cloud-starter-contract-verifier/maven-metadata.xml | grep "<version>${minor}." | tail -1 | sed -ne '/<version>/s#\s*<[^>]*>\s*##gp' | xargs
+}
+
+[[ -z "${STUBRUNNER_VERSION}" ]] && STUBRUNNER_VERSION="$( contractVersion 3.0 )"
+
 mkdir -p target
-STUBRUNNER_VERSION="${STUBRUNNER_VERSION:-3.0.0-SNAPSHOT}"
 LOCATION=""
 case "${STUBRUNNER_VERSION}" in
   *RELEASE*)
