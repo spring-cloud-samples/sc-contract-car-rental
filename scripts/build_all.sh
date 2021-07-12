@@ -22,8 +22,8 @@ function contractVersion() {
 
 BOM_VERSION="${BOM_VERSION:-}"
 SPRING_CLOUD_CONTRACT_VERSION="${SPRING_CLOUD_CONTRACT_VERSION:-}"
-[[ -z "${BOM_VERSION}" ]] && BOM_VERSION="$(bomVersion 2020.0)"
-[[ -z "${SPRING_CLOUD_CONTRACT_VERSION}" ]] && SPRING_CLOUD_CONTRACT_VERSION="$( contractVersion 3.0 )"
+[[ -z "${BOM_VERSION}" ]] && BOM_VERSION="$(bomVersion 2021.0)"
+[[ -z "${SPRING_CLOUD_CONTRACT_VERSION}" ]] && SPRING_CLOUD_CONTRACT_VERSION="$( contractVersion 3.1 )"
 ADDITIONAL_MAVEN_OPTS="${ADDITIONAL_MAVEN_OPTS:--Dspring-cloud.version=$BOM_VERSION -Dspring-cloud-contract.version=$SPRING_CLOUD_CONTRACT_VERSION}"
 ROOT_FOLDER=${ROOT_FOLDER:-`pwd`}
 
