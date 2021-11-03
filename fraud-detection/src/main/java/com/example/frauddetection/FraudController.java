@@ -1,13 +1,12 @@
 package com.example.frauddetection;
 
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import reactor.core.publisher.EmitterProcessor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,16 +25,16 @@ public class FraudController {
 	}
 
 	// (2) - messaging
-	private final EmitterProcessor<Fraud> source;
+	private final StreamBridge source;
 
-	public FraudController(EmitterProcessor<Fraud> source) {
+	public FraudController(StreamBridge source) {
 		this.source = source;
 	}
 
 	// (2) - we're sending a message to a destination `frauds` - consumer expects `fraud`
 	@PostMapping("/message")
 	void message() {
-		source.onNext(new Fraud("Long"));
+		source.send("frauds", new Fraud("Long"));
 	}
 }
 
