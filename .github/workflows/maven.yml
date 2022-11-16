@@ -35,4 +35,4 @@ jobs:
         with:
           node-version: 16
       - name: Build with Maven
-        run: ./scripts/runAcceptanceTests.sh
+        run: ./scripts/build_all.sh
