@@ -1,8 +1,8 @@
 package com.example.frauddetection;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-
 import org.junit.jupiter.api.BeforeEach;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,8 @@ import org.springframework.cloud.stream.binder.test.TestChannelBinderConfigurati
 public class BaseClass {
 
 	// For messaging
-	@Autowired FraudController controller;
+	@Autowired
+	FraudController controller;
 
 	@BeforeEach
 	public void setup() {

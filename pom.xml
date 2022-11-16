@@ -19,6 +19,7 @@
     </properties>
 
     <modules>
+        <module>eureka</module>
         <module>fraud-detection</module>
         <module>car-rental</module>
     </modules>

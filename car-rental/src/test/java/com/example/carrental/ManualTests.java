@@ -1,6 +1,7 @@
 package com.example.carrental;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +19,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 		ids = "com.example:fraud-detection")
 public class ManualTests {
 
-	@Autowired MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
 	@Test
 	public void should_fail_for_fraud() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/rent")
-				.header("Content-Type", "application/json")
-				.content("{\"name\":\"marcin\"}"))
+						.header("Content-Type", "application/json")
+						.content("{\"name\":\"marcin\"}"))
 				.andExpect(MockMvcResultMatchers.status().is(401))
 				.andExpect(MockMvcResultMatchers.content().string("NO"));
 	}
@@ -32,8 +34,8 @@ public class ManualTests {
 	@Test
 	public void should_pass_for_non_fraud() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/rent")
-				.header("Content-Type", "application/json")
-				.content("{\"name\":\"foo\"}"))
+						.header("Content-Type", "application/json")
+						.content("{\"name\":\"foo\"}"))
 				.andExpect(MockMvcResultMatchers.status().is(200))
 				.andExpect(MockMvcResultMatchers.content().string("YES"));
 	}

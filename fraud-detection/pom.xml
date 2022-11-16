@@ -14,16 +14,16 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.1-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<spring-cloud.version>2021.0.6-SNAPSHOT</spring-cloud.version>
-		<spring-cloud-contract.version>3.1.6-SNAPSHOT</spring-cloud-contract.version>
+		<java.version>17</java.version>
+		<spring-cloud.version>2022.0.0-SNAPSHOT</spring-cloud.version>
+		<spring-cloud-contract.version>4.0.0-SNAPSHOT</spring-cloud-contract.version>
 		<!-- we don't want to install stubs twice -->
 		<spring.cloud.contract.verifier.jar.skip>true</spring.cloud.contract.verifier.jar.skip>
 	</properties>
@@ -161,6 +161,23 @@
 					<id>spring-releases</id>
 					<name>Spring Releases</name>
 					<url>https://repo.spring.io/release</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+				<!-- FIXME: 4.0 -->
+				<repository>
+					<id>netflix-snapshots</id>
+					<name>Netflix Snapshots</name>
+					<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-snapshots</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>netflix-candidates</id>
+					<name>Netflix Candidates</name>
+					<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
 					<snapshots>
 						<enabled>false</enabled>
 					</snapshots>

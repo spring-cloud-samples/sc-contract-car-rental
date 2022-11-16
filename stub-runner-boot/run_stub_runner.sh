@@ -8,7 +8,7 @@ function contractVersion() {
     curl --silent https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/spring-cloud-starter-contract-verifier/maven-metadata.xml | grep "<version>${minor}." | tail -1 | sed -ne '/<version>/s#\s*<[^>]*>\s*##gp' | xargs
 }
 
-[[ -z "${STUBRUNNER_VERSION}" ]] && STUBRUNNER_VERSION="$( contractVersion 3.1 )"
+[[ -z "${STUBRUNNER_VERSION}" ]] && STUBRUNNER_VERSION="$( contractVersion 4.0 )"
 
 mkdir -p target
 LOCATION=""

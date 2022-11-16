@@ -1,7 +1,11 @@
 package com.example.carrental;
 
+import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -15,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.invoke.MethodHandles;
-import java.util.function.Consumer;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class CarRentalApplication {
@@ -27,10 +28,11 @@ public class CarRentalApplication {
 	}
 
 	@Bean
-	@LoadBalanced RestTemplate restTemplate() {
+	@LoadBalanced
+	RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 }
 
 // FOR MANUAL TESTS
@@ -67,7 +69,8 @@ class Fraud {
 	public Fraud() {
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return "Fraud{" + "name='" + name + '\'' + '}';
 	}
 
