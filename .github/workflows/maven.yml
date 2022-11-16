@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WAIT_TIME: 40
+      RUN_AS_SUDO: true
     strategy:
       matrix:
         java: ["17"]
@@ -34,4 +35,4 @@ jobs:
         with:
           node-version: 16
       - name: Build with Maven
-        run: sudo ./scripts/runAcceptanceTests.sh
+        run: ./scripts/runAcceptanceTests.sh
