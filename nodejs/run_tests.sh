@@ -2,7 +2,7 @@
 
 set -o errexit
 
-WAIT_TIME="${WAIT_TIME:-15}"
+export WAIT_TIME="${WAIT_TIME:-15}"
 
 function clean() {
   docker stop $(docker ps | grep spring-cloud-contract | awk '{print $1}') && echo "Killed a running container" || echo "Nothing running"
