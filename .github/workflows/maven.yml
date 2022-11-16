@@ -12,15 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: ["8", "11", "16"]
+        java: ["17"]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup java
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+          java-version: 17
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -28,5 +28,8 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Build with Maven
-        run: ./mvnw clean install -B -U -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false
+        run: ./scripts/runAcceptanceTests.sh
