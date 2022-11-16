@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 # port is $1
 function kill_app_with_port() {
     kill -9 $(lsof -t -i:$1) && echo "Killed an app running on port [$1]" || echo "No app running on port [$1]"
@@ -34,3 +36,7 @@ cd $ROOT_FOLDER
 echo -e "\nRunning the build with additional options [$ADDITIONAL_MAVEN_OPTS]"
 
 ./mvnw clean install $ADDITIONAL_MAVEN_OPTS -U --batch-mode -Dmaven.test.redirectTestOutputToFile=true
+
+pushd nodejs
+  ./run_tests.sh
+popd
