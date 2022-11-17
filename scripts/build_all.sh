@@ -36,7 +36,3 @@ cd $ROOT_FOLDER
 echo -e "\nRunning the build with additional options [$ADDITIONAL_MAVEN_OPTS]"
 
 ./mvnw clean install $ADDITIONAL_MAVEN_OPTS -U --batch-mode -Dmaven.test.redirectTestOutputToFile=true
-
-pushd nodejs
-  ./run_tests.sh
-popd
