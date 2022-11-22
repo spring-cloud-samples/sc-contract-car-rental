@@ -74,7 +74,7 @@ class FraudTests {
 	void should_retrieve_list_of_frauds_from_stub_via_discovery() {
 		System.out.println("Waiting for eureka to properly register stubs...");
 		Awaitility.await()
-				.timeout(40, TimeUnit.SECONDS)
+				.timeout(140, TimeUnit.SECONDS)
 				.pollDelay(20, TimeUnit.SECONDS)
 				.pollInterval(1, TimeUnit.SECONDS).untilAsserted(() -> {
 					try {
