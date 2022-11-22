@@ -37,6 +37,7 @@ clean
 # Execute tests
 echo "Running tests against a Stub Runner fat jar"
 TEST_PASSED="false"
+rm -rf target
 nohup ./run_stubrunner_as_process.sh &
 echo "Waiting for the image to start for [${WAIT_TIME}] seconds"
 sleep ${WAIT_TIME}
