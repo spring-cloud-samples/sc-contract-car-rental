@@ -9,6 +9,14 @@ function clean() {
   pkill -9 -f stubrunner && echo "Killed stub runner jar" || echo "Failed to kill stub runner jar"
 }
 
+
+BUILD_ID="${BUILD_ID:-}"
+
+if [[ "${BUILD_ID}" != "" ]]; then
+	echo "Won't run this in Jenkins"
+	exit 0
+fi
+
 # Stop any running images
 clean
 
